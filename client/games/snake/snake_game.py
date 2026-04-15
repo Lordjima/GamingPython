@@ -79,10 +79,10 @@ class SnakeGame(BaseGame):
             if head == self.food:
                 self.score += 10 * self.level
                 self.food = self._spawn_food()
-                # Particules de nourriture
+                # Particules de nourriture (coordonnées en pixels)
                 fx, fy = head
                 for _ in range(8):
-                    ox, oy = random.randint(-2, 2), random.randint(-2, 2)
+                    ox, oy = random.randint(-8, 8), random.randint(-8, 8)
                     self.particles.append((fx * GRID + ox, fy * GRID + oy, 255))
                 # Accélération par niveau
                 if len(self.snake) % 5 == 0:
@@ -109,11 +109,12 @@ class SnakeGame(BaseGame):
                 pygame.draw.rect(self.screen, (18, 18, 40), rect)
                 pygame.draw.rect(self.screen, (28, 28, 55), rect, 1)
 
-        # Particules
+        # Particules (coordonnées déjà en pixels, relatives à la grille)
         for px, py, alpha in self.particles:
+            a = max(0, min(255, int(alpha)))
             s = pygame.Surface((8, 8), pygame.SRCALPHA)
-            pygame.draw.circle(s, (255, 200, 60, alpha), (4, 4), 4)
-            self.screen.blit(s, (off_x + px * GRID - 4, off_y + py * GRID - 4))
+            pygame.draw.circle(s, (255, 200, 60, a), (4, 4), 4)
+            self.screen.blit(s, (off_x + px - 4, off_y + py - 4))
 
         # Nourriture (pulsante)
         t = pygame.time.get_ticks() / 1000

@@ -56,6 +56,7 @@ class MenuItem:
     def update(self, dt: float, is_selected: bool):
         target = 1.0 if is_selected else 0.0
         self.hover += (target - self.hover) * 12 * dt
+        self.hover = max(0.0, min(1.0, self.hover))  # clamp [0, 1]
 
 
 # ─── Menu principal ──────────────────────────────────────────────────────────────
@@ -224,6 +225,7 @@ class MainMenu:
         self.sound_manager.play_music("menu_music.ogg")
         while self.running:
             dt = self.clock.tick(self.settings.FPS) / 1000.0
+            dt = min(dt, 0.05)  # cap dt pour éviter hover > 1.0 au premier frame
             self.time_elapsed += dt
             self._handle_events()
             self._update(dt)
