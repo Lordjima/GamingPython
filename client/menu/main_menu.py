@@ -45,11 +45,12 @@ class Particle:
 # ─── Élément de menu ────────────────────────────────────────────────────────────
 
 class MenuItem:
-    def __init__(self, label: str, color: tuple, action: str, description: str):
+    def __init__(self, label: str, color: tuple, action: str, description: str, icon: object = None):
         self.label = label
         self.color = color
         self.action = action
         self.description = description
+        self.icon = icon  # pygame.Surface ou None
         self.hover: float = 0.0
         self.rect = pygame.Rect(0, 0, 0, 0)
 
@@ -61,13 +62,14 @@ class MenuItem:
 
 # ─── Menu principal ──────────────────────────────────────────────────────────────
 
+# (label, color, action, description, icon_file)
 MENU_ITEMS_DATA = [
-    ("🐍  Snake",    (60, 220, 120),  "snake",       "Mangez, grandissez, survivez !"),
-    ("🧱  Tetris",   (130, 70, 255),  "tetris",      "Empilez les blocs, effacez les lignes !"),
-    ("🏓  Pong",     (60, 200, 255),  "pong",        "1 vs IA — Le classique de l'arcade"),
-    ("🏆  Scores",   (255, 190, 50),  "leaderboard", "Classements en ligne"),
-    ("⚙   Réglages", (170, 170, 200), "settings",    "Son, résolution, thème"),
-    ("🚪  Quitter",  (255, 80,  80),  "quit",        "À bientôt !"),
+    ("Snake",     (60, 220, 120),  "snake",       "Mangez, grandissez, survivez !",   "icon_snake"),
+    ("Tetris",    (130, 70, 255),  "tetris",      "Empilez les blocs, effacez les lignes !", "icon_tetris"),
+    ("Pong",      (60, 200, 255),  "pong",        "1 joueur vs IA — Classique arcade", "icon_pong"),
+    ("Scores",    (255, 190, 50),  "leaderboard", "Classements en ligne",             "icon_scores"),
+    ("Reglages",  (170, 170, 200), "settings",    "Son, resolution, theme",           "icon_settings"),
+    ("Quitter",   (255, 80,  80),  "quit",        "A bientot !",                      "icon_quit"),
 ]
 
 
@@ -91,11 +93,20 @@ class MainMenu:
         self.font_small   = self._load_font(18)
         self.font_desc    = self._load_font(17)
 
-        # Éléments de menu
-        self.items = [
-            MenuItem(label, color, action, desc)
-            for label, color, action, desc in MENU_ITEMS_DATA
-        ]
+        # Éléments de menu avec icônes
+        icons_dir = settings.IMAGES_DIR / "icons"
+        self.items = []
+        icon_size = (38, 38)
+        for label, color, action, desc, icon_file in MENU_ITEMS_DATA:
+            icon_surf = None
+            icon_path = icons_dir / f"{icon_file}.png"
+            if icon_path.exists():
+                try:
+                    img = pygame.image.load(str(icon_path)).convert_alpha()
+                    icon_surf = pygame.transform.smoothscale(img, icon_size)
+                except Exception:
+                    pass
+            self.items.append(MenuItem(label, color, action, desc, icon_surf))
 
         # Assets
         self.bg_image   = self._load_image("background.png")
@@ -389,7 +400,7 @@ class MainMenu:
             # Fond coloré
             bg = pygame.Surface((item_w, h), pygame.SRCALPHA)
             r, g, b = item.color
-            bg.fill((r, g, b, int(35 + 115 * hov)))
+            bg.fill((r, g, b, max(0, min(255, int(35 + 115 * hov)))))
             self.screen.blit(bg, (item_x, y))
 
             # Barre gauche
@@ -398,20 +409,32 @@ class MainMenu:
 
             # Contour
             brd = pygame.Surface((item_w, h), pygame.SRCALPHA)
-            pygame.draw.rect(brd, (*item.color, int(60 + 180 * hov)), (0, 0, item_w, h), 1, border_radius=4)
+            pygame.draw.rect(brd, (*item.color, max(0, min(255, int(60 + 180 * hov)))), (0, 0, item_w, h), 1, border_radius=4)
             self.screen.blit(brd, (item_x, y))
+
+            # Icône PNG
+            icon_x = item_x + 10
+            if item.icon:
+                icon_y = y + (h - item.icon.get_height()) // 2
+                # Légère transparence si pas sélectionné
+                icon_copy = item.icon.copy()
+                icon_copy.set_alpha(max(0, min(255, int(160 + 95 * hov))))
+                self.screen.blit(icon_copy, (icon_x, icon_y))
+                text_offset = item.icon.get_width() + 16
+            else:
+                text_offset = 10
 
             # Label
             txt_color = self.settings.COLOR_TEXT if hov < 0.1 else (
                 tuple(min(255, int(c + (255 - c) * hov * 0.25)) for c in item.color)
             )
             lbl = self.font_item.render(item.label, True, txt_color)
-            self.screen.blit(lbl, lbl.get_rect(midleft=(item_x + 18, y + h // 2)))
+            self.screen.blit(lbl, lbl.get_rect(midleft=(item_x + text_offset, y + h // 2)))
 
             # Description (apparaît au hover)
             if hov > 0.05 and item.description:
                 desc = self.font_desc.render(item.description, True, self.settings.COLOR_TEXT_DIM)
-                desc.set_alpha(int(255 * hov))
+                desc.set_alpha(max(0, min(255, int(255 * hov))))
                 self.screen.blit(desc, desc.get_rect(midright=(item_x + item_w - 14, y + h // 2)))
 
     def _draw_footer(self, W: int, H: int):
