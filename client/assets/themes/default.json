@@ -1,0 +1,19 @@
+{
+  "name": "default",
+  "colors": {
+    "bg": [8, 8, 22],
+    "primary": [100, 60, 255],
+    "secondary": [255, 60, 130],
+    "accent": [60, 220, 255],
+    "text": [235, 235, 255],
+    "text_dim": [130, 130, 175],
+    "success": [60, 220, 120],
+    "error": [255, 80, 80],
+    "warning": [255, 180, 60]
+  },
+  "fonts": {
+    "title_size": 68,
+    "menu_size": 34,
+    "small_size": 18
+  }
+}

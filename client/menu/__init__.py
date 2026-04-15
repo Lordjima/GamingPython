@@ -1,0 +1,1 @@
+"""Package menu client."""

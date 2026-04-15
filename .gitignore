@@ -1,0 +1,54 @@
+# ═══════════════════════════════════════════════════════════════
+#  Gaming Python — .gitignore
+# ═══════════════════════════════════════════════════════════════
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Environnements virtuels
+venv/
+.venv/
+env/
+ENV/
+.env.local
+.env.production
+
+# Base de données
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets (JAMAIS sur Git)
+.env
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Alembic
+alembic/versions/*.pyc
