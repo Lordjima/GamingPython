@@ -380,13 +380,13 @@ class MainMenu:
             title_y = 70
 
         # Ombre du titre
-        glow = self.font_title.render("GAMING PYTHON", True, self.settings.COLOR_PRIMARY)
+        glow = self.font_title.render("h4ckR", True, self.settings.COLOR_PRIMARY)
         glow.set_alpha(70)
         cx = W // 2
         self.screen.blit(glow, glow.get_rect(center=(cx + 3, title_y + 3)))
 
         # Titre principal
-        title = self.font_title.render("GAMING PYTHON", True, self.settings.COLOR_TEXT)
+        title = self.font_title.render("h4ckR", True, self.settings.COLOR_TEXT)
         self.screen.blit(title, title.get_rect(center=(cx, title_y)))
 
         # Sous-titre

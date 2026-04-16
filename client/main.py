@@ -1,5 +1,5 @@
 """
-Gaming Python — Point d'entrée principal
+h4ckR — Point d'entrée principal
 Lance le menu principal Pygame
 """
 import pygame
@@ -20,21 +20,10 @@ def main():
 
     settings = Settings()
 
-    settings2 = Settings()
-
-
-    settings.height = 300
-    settings2.width = 400
-
-
     info = pygame.display.Info()
     screen = pygame.display.set_mode((info.current_w, info.current_h))
-    print(info)
-    
-    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
-
-    pygame.display.set_caption("🎮 Gaming Python")
+    pygame.display.set_caption("🔐 h4ckR")
 
     # Icône de fenêtre
     icon_path = os.path.join(os.path.dirname(__file__), "assets", "images", "logo.png")

@@ -14,9 +14,9 @@ from server.api.routes import players, scores, leaderboard, games, escape
 # ── Application ─────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title="Gaming Python API",
-    description="API REST pour le launcher de jeux Gaming Python — scores, joueurs, leaderboards.",
-    version="1.0.0",
+    title="h4ckR API",
+    description="API REST pour la plateforme h4ckR — escape game, scores, joueurs, leaderboards.",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -38,7 +38,7 @@ async def startup_event():
     """Initialise la base de données au démarrage."""
     init_db()
     print("✅  Base de données initialisée")
-    print(f"🎮  Gaming Python API v1.0 — {settings.API_HOST}:{settings.API_PORT}")
+    print(f"🔐  h4ckR API v2.0 — {settings.API_HOST}:{settings.API_PORT}")
 
 # ── Routers ─────────────────────────────────────────────────────────────────────
 
@@ -52,12 +52,12 @@ app.include_router(escape.router,      prefix="/api/escape",      tags=["Escape 
 
 @app.get("/health", tags=["Santé"])
 async def health_check():
-    return {"status": "ok", "service": "Gaming Python API", "version": "1.0.0"}
+    return {"status": "ok", "service": "h4ckR API", "version": "2.0.0"}
 
 @app.get("/", tags=["Root"])
 async def root():
     return {
-        "message": "🎮 Gaming Python API",
+        "message": "🔐 h4ckR API",
         "docs": "/docs",
         "health": "/health",
     }

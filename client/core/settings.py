@@ -11,7 +11,7 @@ class Settings:
     SCREEN_WIDTH: int = 1280
     SCREEN_HEIGHT: int = 720
     FPS: int = 60
-    TITLE: str = "Gaming Python"
+    TITLE: str = "h4ckR"
     FULLSCREEN: bool = False
 
     # ── API ─────────────────────────────────────────────────────────────
