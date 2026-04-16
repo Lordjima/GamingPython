@@ -29,15 +29,21 @@ class APIClient:
             print(f"[API] GET {endpoint} → {e}")
             return None
 
-    def _post(self, endpoint: str, data: dict) -> Optional[Dict]:
+    def _post(self, endpoint: str, data: dict, method: str = "post") -> Optional[Dict]:
         try:
             with httpx.Client(timeout=self.timeout) as client:
-                r = client.post(f"{self.base_url}{endpoint}", json=data)
+                if method == "put":
+                    r = client.put(f"{self.base_url}{endpoint}", json=data)
+                else:
+                    r = client.post(f"{self.base_url}{endpoint}", json=data)
                 r.raise_for_status()
                 return r.json()
         except Exception as e:
-            print(f"[API] POST {endpoint} → {e}")
+            print(f"[API] {method.upper()} {endpoint} → {e}")
             return None
+
+    def _put(self, endpoint: str, data: dict) -> Optional[Dict]:
+        return self._post(endpoint, data, method="put")
 
     # ── Joueurs ──────────────────────────────────────────────────────────
 

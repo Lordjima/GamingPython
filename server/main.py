@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from server.core.config import settings
 from server.db.database import engine
 from server.db.init_db import init_db
-from server.api.routes import players, scores, leaderboard, games
+from server.api.routes import players, scores, leaderboard, games, escape
 
 
 # ── Application ─────────────────────────────────────────────────────────────────
@@ -46,6 +46,7 @@ app.include_router(players.router,     prefix="/api/players",     tags=["Joueurs
 app.include_router(scores.router,      prefix="/api/scores",      tags=["Scores"])
 app.include_router(leaderboard.router, prefix="/api/leaderboard", tags=["Leaderboard"])
 app.include_router(games.router,       prefix="/api/games",       tags=["Jeux"])
+app.include_router(escape.router,      prefix="/api/escape",      tags=["Escape Game"])
 
 # ── Routes utilitaires ──────────────────────────────────────────────────────────
 

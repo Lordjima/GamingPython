@@ -20,10 +20,20 @@ def main():
 
     settings = Settings()
 
-    flags = pygame.RESIZABLE
-    screen = pygame.display.set_mode(
-        (settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT), flags
-    )
+    settings2 = Settings()
+
+
+    settings.height = 300
+    settings2.width = 400
+
+
+    info = pygame.display.Info()
+    screen = pygame.display.set_mode((info.current_w, info.current_h))
+    print(info)
+    
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+
     pygame.display.set_caption("🎮 Gaming Python")
 
     # Icône de fenêtre

@@ -64,12 +64,13 @@ class MenuItem:
 
 # (label, color, action, description, icon_file)
 MENU_ITEMS_DATA = [
-    ("Snake",     (60, 220, 120),  "snake",       "Mangez, grandissez, survivez !",   "icon_snake"),
-    ("Tetris",    (130, 70, 255),  "tetris",      "Empilez les blocs, effacez les lignes !", "icon_tetris"),
-    ("Pong",      (60, 200, 255),  "pong",        "1 joueur vs IA — Classique arcade", "icon_pong"),
-    ("Scores",    (255, 190, 50),  "leaderboard", "Classements en ligne",             "icon_scores"),
-    ("Reglages",  (170, 170, 200), "settings",    "Son, resolution, theme",           "icon_settings"),
-    ("Quitter",   (255, 80,  80),  "quit",        "A bientot !",                      "icon_quit"),
+    ("Snake",        (60, 220, 120),  "snake",        "Mangez, grandissez, survivez !",              "icon_snake"),
+    ("Tetris",       (130, 70, 255),  "tetris",       "Empilez les blocs, effacez les lignes !",     "icon_tetris"),
+    ("Pong",         (60, 200, 255),  "pong",         "1 joueur vs IA — Classique arcade",           "icon_pong"),
+    ("Escape Game",  (0, 230, 120),   "escape",       "5 salles · Enigmes · Interactivite OS",       "icon_escape"),
+    ("Scores",       (255, 190, 50),  "leaderboard",  "Classements en ligne",                        "icon_scores"),
+    ("Reglages",     (170, 170, 200), "settings",     "Son, resolution, theme",                      "icon_settings"),
+    ("Quitter",      (255, 80,  80),  "quit",         "A bientot !",                                 "icon_quit"),
 ]
 
 
@@ -275,6 +276,8 @@ class MainMenu:
             self.running = False
         elif action in ("snake", "tetris", "pong"):
             self._launch_game(action)
+        elif action == "escape":
+            self._launch_escape()
         elif action == "leaderboard":
             from client.menu.leaderboard_menu import LeaderboardMenu
             LeaderboardMenu(self.screen, self.settings, self.api_client).run()
@@ -297,6 +300,13 @@ class MainMenu:
         else:
             return
 
+        game.run()
+        self.sound_manager.play_music("menu_music.ogg")
+
+    def _launch_escape(self):
+        self.sound_manager.stop_music()
+        from client.games.escape.escape_game import EscapeGame
+        game = EscapeGame(self.screen, self.settings, self.player_name)
         game.run()
         self.sound_manager.play_music("menu_music.ogg")
 
